@@ -37,7 +37,6 @@ class Box {
 
 class Piece {
   constructor(x = 0, y = 0, shape, color = { r: 0, g: 0, b: 0 }) {
-    // Testando 123
     this.x = x;
     this.y = y;
     this.shape = shape;
