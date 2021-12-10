@@ -1,5 +1,5 @@
 //constants
-const canvasWidth = 600;
+const canvasWidth = 500;
 const canvasHeight = 600;
 const backgroundColor = 50;
 const boxDim = 30;
