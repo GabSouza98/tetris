@@ -35,6 +35,15 @@ class Box {
   }
 }
 
+class Piece {
+  constructor(x = 0, y = 0, shape, color = { r: 0, g: 0, b: 0 }) {
+    this.x = x;
+    this.y = y;
+    this.shape = shape;
+    this.color = color;
+  }
+}
+
 function applyGravity() {
   myBox.y += boxDim;
 }
