@@ -17,17 +17,21 @@ const J = [ [0, 0, 0],
             [0, 0, 1],
             [1, 1, 1] ];
 
+const V = [ [1, 1, 1],            
+            [0, 1, 0],
+            [0, 0, 0] ];
+
 //variables
 let myBox;
 let myPiece;
-let speed = 10;
+let speed = 5;
 let pieceCount = 0;
 
 function setup() {
   createCanvas(canvasWidth, canvasHeight);
   //myBox = new Box(canvasWidth / 2, 0, boxDim, { r: 150, g: 48, b: 95 });
   
-  myPiece = new Piece(canvasWidth/2, 0, T, color = { r: 80, g: 150, b: 20 })
+  myPiece = new Piece(canvasWidth/2, 0, V, color = { r: 80, g: 150, b: 20 })
    
 }
 
@@ -62,20 +66,23 @@ class Piece {
     this.boxes = this.createBoxes();
   }
 
-  createBoxes() {
-    let boxes = []
+  createBoxes() {   
+    let boxes = [];
+    let lineArray = [];
     let { r, g, b } = this.color;
     fill(r, g, b);
     for(var i=0;i<this.shape.length;i++) {
       for(var j=0;j<this.shape.length;j++) {
-        var existBox = this.shape[j][i];
-        boxes.push(
+        var existBox = this.shape[j][i];        
+        lineArray.push(
           new Box(this.x + i*existBox*boxDim,
                   this.y + j*existBox*boxDim,
                   existBox*boxDim,
                   this.color)
-        );        
-      }
+        );         
+      }      
+      boxes.push(lineArray);
+      lineArray=[];
     }
     return boxes;
   }
@@ -83,21 +90,30 @@ class Piece {
   show() {
     let { r, g, b } = this.color;
     fill(r, g, b);
-    for(var i=0;i<this.boxes.length;i++) {   
-      this.boxes[i].show();
-    }    
+    for(var i=0;i<this.shape.length;i++) {
+      for(var j=0;j<this.shape.length;j++) {   
+        this.boxes[i][j].show();
+      }  
+    }  
   }
 
   applyGravity() {
-    for(var i=0;i<this.boxes.length;i++) {   
-      this.boxes[i].y += boxDim;      
+    for(var i=0;i<this.shape.length;i++) {
+      for(var j=0;j<this.shape.length;j++) {
+        this.boxes[i][j].y += boxDim;     
+      } 
     }   
-  }
+  }  
 
   update() {
-    
-       
-    
+   
+    //VERIFICA SE CHEGOU NO CHÃO
+    for(var i=0;i<this.shape.length;i++) {
+      if(this.boxes[this.shape.length - 1][i].y >= (canvasHeight-boxDim) ){
+        return;
+      }          
+    } 
+      
 
     if(frameCount % speed == 0 ) {
       this.applyGravity();
