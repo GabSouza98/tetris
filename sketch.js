@@ -1,138 +1,128 @@
 //constants
-const canvasWidth = 400;
-const canvasHeight = 600;
+const rows = 18;
+const cols = 10;
+const ratio = rows/cols;
+const canvasWidth = 300;
+const canvasHeight = ratio*canvasWidth;
 const backgroundColor = 50;
-const boxDim = 20;
+
+const pieces = {
+    1: {name: "L",
+        color: '#ff8d00',
+        matrix:[[1, 0, 0],            
+                [1, 0, 0],
+                [1, 1, 0]]
+        },
+    2: {name: "T",
+        color: '#9f0096',
+        matrix:[[0, 0, 0],            
+                [0, 1, 0],
+                [1, 1, 1]]
+        },
+    3: {name: "J",
+        color: '#ff51bc',
+        matrix: [ [0, 0, 1],            
+                  [0, 0, 1],
+                  [0, 1, 1] ]
+        },
+    4: {name: "S",
+        color: '#f60000',
+        matrix: [ [0, 0, 0],            
+                  [0, 1, 1],
+                  [1, 1, 0] ]
+        },
+    5: {name: "Z",
+        color: '#69b625',
+        matrix: [ [0, 0, 0],            
+                  [1, 1, 0],
+                  [0, 1, 1] ]
+        },
+    6: {name: "O",
+        color: '#faff00',
+        matrix: [ [1, 1],            
+                  [1, 1] ]
+        },
+    7: {name: "I",
+        color: '#00e4ff',
+        matrix: [ [1, 0, 0, 0],   
+                  [1, 0, 0, 0],       
+                  [1, 0, 0, 0],  
+                  [1, 0, 0, 0] ]
+        },
+}
+
+
 const timer = 800;
-
-const L = [ [0, 0, 0],            
-            [1, 0, 0],
-            [1, 1, 1] ];
-
-const T = [ [0, 0, 0],            
-            [0, 1, 0],
-            [1, 1, 1] ];
-
-const J = [ [0, 0, 0],            
-            [0, 0, 1],
-            [1, 1, 1] ];
-
-const V = [ [1, 1, 1],            
-            [0, 1, 0],
-            [0, 0, 0] ];
-
-//variables
-let myBox;
-let myPiece;
-let speed = 5;
-let pieceCount = 0;
+let board;
+//let piece;
 
 function setup() {
-  createCanvas(canvasWidth, canvasHeight);
-  //myBox = new Box(canvasWidth / 2, 0, boxDim, { r: 150, g: 48, b: 95 });
+    createCanvas(canvasWidth, canvasHeight);    
+    board = new Board(); 
+    //piece = new Piece();  
+    //generatePiece();   
+    
+  }
   
-  myPiece = new Piece(canvasWidth/2, 0, V, color = { r: 80, g: 150, b: 20 })
-   
-}
-
 function draw() {
-  background(backgroundColor);
-  drawGrid();  
-  myPiece.show();  
-  myPiece.update();  
+    background(backgroundColor);
+    board.drawGrid();  
+    board.draw();      
 }
 
-class Box {
-  constructor(x = 0, y = 0, boxDimension = 0, color = { r: 0, g: 0, b: 0 }) {
-    this.x = x;
-    this.y = y;
-    this.boxDimension = boxDimension;
-    this.color = color;
-  }
-
-  show() {
-    let { r, g, b } = this.color;
-    fill(r, g, b);
-    rect(this.x, this.y, this.boxDimension, this.boxDimension);
-  }
+function generatePiece() {
+    let number = Math.floor(1 + Math.random() * (Object.keys(pieces).length))
+    console.log(pieces[number])
+    return pieces[number];
 }
 
-class Piece {
-  constructor(x = 0, y = 0, shape, color = { r: 0, g: 0, b: 0 }) {
-    this.x = x;
-    this.y = y;
-    this.shape = shape;
-    this.color = color;  
-    this.boxes = this.createBoxes();
-  }
-
-  createBoxes() {   
-    let boxes = [];
-    let lineArray = [];
-    let { r, g, b } = this.color;
-    fill(r, g, b);
-    for(var i=0;i<this.shape.length;i++) {
-      for(var j=0;j<this.shape.length;j++) {
-        var existBox = this.shape[j][i];        
-        lineArray.push(
-          new Box(this.x + i*existBox*boxDim,
-                  this.y + j*existBox*boxDim,
-                  existBox*boxDim,
-                  this.color)
-        );         
-      }      
-      boxes.push(lineArray);
-      lineArray=[];
-    }
-    return boxes;
-  }
-
-  show() {
-    let { r, g, b } = this.color;
-    fill(r, g, b);
-    for(var i=0;i<this.shape.length;i++) {
-      for(var j=0;j<this.shape.length;j++) {   
-        this.boxes[i][j].show();
-      }  
-    }  
-  }
-
-  applyGravity() {
-    for(var i=0;i<this.shape.length;i++) {
-      for(var j=0;j<this.shape.length;j++) {
-        this.boxes[i][j].y += boxDim;     
-      } 
+class Board {
+    constructor() {
+        this.board = this.createBoard();        
+        this.boxHeight = canvasHeight/rows;
+        this.boxWidth = canvasWidth/cols;
+        this.boxSize = Math.floor(this.boxHeight,this.boxWidth);        
     }   
-  }  
 
-  update() {
-   
-    //VERIFICA SE CHEGOU NO CHÃO
-    for(var i=0;i<this.shape.length;i++) {
-      if(this.boxes[this.shape.length - 1][i].y >= (canvasHeight-boxDim) ){
-        return;
-      }          
-    } 
-      
-
-    if(frameCount % speed == 0 ) {
-      this.applyGravity();
+    createBoard() {
+        let boxes = [];
+        let lineArray = [];
+        for(var i=0; i<rows;i++) {
+            for(var j=0; j<cols; j++) {
+                lineArray.push(0);
+            }
+        boxes.push(lineArray);
+        lineArray = [];
+        }
+    return boxes;
     }
-  }
 
+    drawGrid() {
+        //desenha linhas horizontais              
+        for (var i = 0; i <= rows; i++) {
+            stroke(20);
+            strokeWeight(0.5);
+            line(0, i*this.boxSize, canvasWidth, i*this.boxSize);
+        }
+        //desenha linhas verticais
+        for (var j = 0; j <= cols; j++) {
+            stroke(20);
+            strokeWeight(0.5);
+            line(j*this.boxSize, 0, j*this.boxSize, canvasHeight);
+        }
+        
+    }
+
+    draw() {
+        for (var i in this.board) {            
+            for (var j in this.board[i]) {
+                if(this.board[i][j]>0) {
+                    fill(150, 140, 130);
+                    rect(i*this.boxSize, j*this.boxSize, this.boxSize, this.boxSize);
+                }  
+               
+            }
+        }
+    }
 }
 
-function drawGrid() {
-  //desenha linhas horizontais
-  for (i = 0; i <= height; i = i + boxDim) {
-    stroke(20);
-    strokeWeight(0.5);
-    line(0, i, width, i);
-  }
-  //desenha linhas verticais
-  for (i = 0; i <= width; i = i + boxDim) {
-    stroke(20);
-    strokeWeight(0.5);
-    line(i, 0, i, height);
-  }
-}
