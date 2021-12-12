@@ -1,6 +1,6 @@
 //constants
-const rows = 50;
-const cols = 30;
+const rows = 18;
+const cols = 10;
 const ratio = rows / cols;
 const canvasWidth = 300;
 const canvasHeight = ratio * canvasWidth;
