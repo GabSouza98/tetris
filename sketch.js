@@ -76,37 +76,57 @@ const pieces = {
 const timer = 800;
 let board;
 let piece;
+let game;
 
 function setup() {
   frameRate(15);
   createCanvas(canvasWidth, canvasHeight);
-  board = new Board();
-  piece = new Piece();
-  //generatePiece();
+
+  game = new Game();
   background(backgroundColor);
-  board.drawGrid();
-  board.draw();
-  piece.draw();
+  game.start();
 }
 
 function draw() {
   background(backgroundColor);
-  piece.update();
-  piece.draw();
-  board.drawGrid();
-  // if (frameCount % 30 == 0) {
-  //   throw new Error();
-  // }
-  board.draw();
+  game.update();
 }
 
 function keyPressed() {
   if (keyCode === UP_ARROW) {
-    // console.log("Apertei pra cima");
-    console.log(piece.cropPiece());
-    piece.applyRotation();
-    console.log(piece.cropPiece());
-    // piece.draw();
+    game.piece.applyRotation();
+  }
+
+  if (keyCode === DOWN_ARROW) {
+    game.piece.accelerate();
+  }
+
+  if (keyCode === LEFT_ARROW) {
+    game.piece.move(-1);
+  }
+
+  if (keyCode === RIGHT_ARROW) {
+    game.piece.move(1);
+  }
+}
+
+class Game {
+  constructor() {
+    this.piece = new Piece();
+    this.board = new Board();
+  }
+
+  start() {
+    this.board.drawGrid();
+    this.board.draw();
+    this.piece.draw();
+  }
+
+  update() {
+    this.piece.update();
+    this.piece.draw();
+    this.board.drawGrid();
+    this.board.draw();
   }
 }
 
@@ -170,9 +190,7 @@ class Piece {
   }
 
   update() {
-    // if (frameCount % speed == 0) {
     this.applyGravity();
-    // }
   }
 
   applyGravity() {
@@ -190,10 +208,6 @@ class Piece {
     // Como a peça ta caindo 1 espaço toda vez que aplico gravidade, atualizo o y1 e y2 da posição da matriz da peça
     this.y1 += 1;
     this.y2 += 1;
-    // console.log(this.cropPiece());
-    // console.log(this.x1, this.y1, this.x2, this.y2);
-    // console.log(this.board);
-    // console.log(this.x1, this.y1, this.x2, this.y2);
   }
 
   cropPiece() {
