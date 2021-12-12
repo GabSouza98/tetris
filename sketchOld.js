@@ -5,52 +5,67 @@ const backgroundColor = 50;
 const boxDim = 20;
 const timer = 800;
 
-const L = { matriz: [ [1, 0, 0],            
-                      [1, 0, 0],
-                      [1, 1, 0] ],
-            color: (150,30,80)
-          };
- 
+const L = {
+  matriz: [
+    [1, 0, 0],
+    [1, 0, 0],
+    [1, 1, 0],
+  ],
+  color: (150, 30, 80),
+};
 
-const T = [ [0, 0, 0],            
-            [0, 1, 0],
-            [1, 1, 1] ];
+const T = [
+  [0, 0, 0],
+  [0, 1, 0],
+  [1, 1, 1],
+];
 
-const J = [ [0, 0, 1],            
-            [0, 0, 1],
-            [0, 1, 1] ];
+const J = [
+  [0, 0, 1],
+  [0, 0, 1],
+  [0, 1, 1],
+];
 
-const S = [ [0, 0, 0],            
-            [0, 1, 1],
-            [1, 1, 0] ];
+const S = [
+  [0, 0, 0],
+  [0, 1, 1],
+  [1, 1, 0],
+];
 
-const Z = [ [0, 0, 0],            
-            [1, 1, 0],
-            [0, 1, 1] ];
+const Z = [
+  [0, 0, 0],
+  [1, 1, 0],
+  [0, 1, 1],
+];
 
-const V = [ [1, 1, 1],            
-            [0, 1, 0],
-            [0, 0, 0] ];
+const V = [
+  [1, 1, 1],
+  [0, 1, 0],
+  [0, 0, 0],
+];
 
-const O = [ [1, 1],            
-            [1, 1] ];
+const O = [
+  [1, 1],
+  [1, 1],
+];
 
-const I = [ [1, 0, 0, 0],   
-            [1, 0, 0, 0],       
-            [1, 0, 0, 0],  
-            [1, 0, 0, 0] ];   
+const I = [
+  [1, 0, 0, 0],
+  [1, 0, 0, 0],
+  [1, 0, 0, 0],
+  [1, 0, 0, 0],
+];
 
 let pieces = {
-                1: L,
-                2: J,
-                3: T,
-                4: S,
-                Z: Z,
-                O: O,
-                I: I
-              };              
-          
-              
+  1: L,
+  2: J,
+  3: T,
+  4: S,
+  Z: Z,
+  O: O,
+  I: I,
+};
+
 //variables
 let myBox;
 let myPiece;
@@ -60,22 +75,19 @@ let pieceCount = 0;
 function setup() {
   createCanvas(canvasWidth, canvasHeight);
   //myBox = new Box(canvasWidth / 2, 0, boxDim, { r: 150, g: 48, b: 95 });
-  
-  myPiece = new Piece(canvasWidth/2, 0, color = { r: 80, g: 150, b: 20 })
-   
+
+  myPiece = new Piece(canvasWidth / 2, 0, (color = { r: 80, g: 150, b: 20 }));
 }
 
 function draw() {
   background(backgroundColor);
-  drawGrid();  
-  myPiece.show();  
-  //myPiece.update();  
+  drawGrid();
+  myPiece.show();
+  //myPiece.update();
 }
 
-
-function keyPressed() { 
-
-  if (keyCode === UP_ARROW) {    
+function keyPressed() {
+  if (keyCode === UP_ARROW) {
     myPiece.rotate();
   }
 
@@ -84,11 +96,11 @@ function keyPressed() {
   }
 
   if (keyCode === LEFT_ARROW) {
-    myPiece.move(-1);   
+    myPiece.move(-1);
   }
 
   if (keyCode === RIGHT_ARROW) {
-    myPiece.move(1);    
+    myPiece.move(1);
   }
 }
 
@@ -112,36 +124,37 @@ class Piece {
     this.x = x;
     this.y = y;
     //shape é uma matriz de 1 e 0
-    this.shape = this.generateRandomPiece();    
-    this.color = color;  
+    this.shape = this.generateRandomPiece();
+    this.color = color;
     //boxes é uma matriz de objetos Box
     this.boxes = this.createBoxes();
-    
   }
 
   generateRandomPiece() {
-    let keys = Object.keys(pieces)
-    let piece = keys[Math.floor(Math.random() * keys.length)]
+    let keys = Object.keys(pieces);
+    let piece = keys[Math.floor(Math.random() * keys.length)];
     return pieces[piece];
   }
 
-  createBoxes() {   
+  createBoxes() {
     let boxes = [];
     let lineArray = [];
     let { r, g, b } = this.color;
     fill(r, g, b);
-    for(var i=0;i<this.shape.length;i++) {
-      for(var j=0;j<this.shape.length;j++) {
-        var existBox = this.shape[j][i];        
+    for (var i = 0; i < this.shape.length; i++) {
+      for (var j = 0; j < this.shape.length; j++) {
+        var existBox = this.shape[j][i];
         lineArray.push(
-          new Box(this.x + i*existBox*boxDim,
-                  this.y + j*existBox*boxDim,
-                  existBox*boxDim,
-                  this.color)
-        );         
-      }      
+          new Box(
+            this.x + i * existBox * boxDim,
+            this.y + j * existBox * boxDim,
+            existBox * boxDim,
+            this.color
+          )
+        );
+      }
       boxes.push(lineArray);
-      lineArray=[];
+      lineArray = [];
     }
     return boxes;
   }
@@ -149,24 +162,26 @@ class Piece {
   show() {
     let { r, g, b } = this.color;
     fill(r, g, b);
-    for(var i=0;i<this.boxes.length;i++) {
-      for(var j=0;j<this.boxes.length;j++) {   
+    for (var i = 0; i < this.boxes.length; i++) {
+      for (var j = 0; j < this.boxes.length; j++) {
         this.boxes[i][j].show();
-      }  
-    }  
+      }
+    }
   }
 
   applyGravity() {
-    for(var i=0;i<this.shape.length;i++) {
-      for(var j=0;j<this.shape.length;j++) {
-        this.boxes[i][j].y += boxDim;     
-      } 
-    }   
-  }  
+    for (var i = 0; i < this.shape.length; i++) {
+      for (var j = 0; j < this.shape.length; j++) {
+        this.boxes[i][j].y += boxDim;
+      }
+    }
+  }
 
-  rotate() {  
-    this.boxes = this.boxes[0].map((line, index) => this.boxes.map(row => row[index]).reverse());
-    console.log(this.boxes)
+  rotate() {
+    this.boxes = this.boxes[0].map((line, index) =>
+      this.boxes.map((row) => row[index]).reverse()
+    );
+    console.log(this.boxes);
   }
 
   move() {
@@ -178,22 +193,19 @@ class Piece {
   }
 
   update() {
-   
     //VERIFICA SE CHEGOU NO CHÃO
-    for(var i=0;i<this.shape.length;i++) {
-      for(var j=0;j<this.shape.length;j++) {
-        if(this.boxes[i][j].y >= (canvasHeight-boxDim) ){
+    for (var i = 0; i < this.shape.length; i++) {
+      for (var j = 0; j < this.shape.length; j++) {
+        if (this.boxes[i][j].y >= canvasHeight - boxDim) {
           return;
-        }   
-      }             
-    } 
-      
+        }
+      }
+    }
 
-    if(frameCount % speed == 0 ) {
+    if (frameCount % speed == 0) {
       this.applyGravity();
     }
   }
-
 }
 
 function drawGrid() {
