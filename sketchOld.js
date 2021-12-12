@@ -5,9 +5,12 @@ const backgroundColor = 50;
 const boxDim = 20;
 const timer = 800;
 
-const L = [ [1, 0, 0],            
-            [1, 0, 0],
-            [1, 1, 0] ];
+const L = { matriz: [ [1, 0, 0],            
+                      [1, 0, 0],
+                      [1, 1, 0] ],
+            color: (150,30,80)
+          };
+ 
 
 const T = [ [0, 0, 0],            
             [0, 1, 0],
@@ -38,10 +41,10 @@ const I = [ [1, 0, 0, 0],
             [1, 0, 0, 0] ];   
 
 let pieces = {
-                L: L,
-                J: J,
-                T: T,
-                S: S,
+                1: L,
+                2: J,
+                3: T,
+                4: S,
                 Z: Z,
                 O: O,
                 I: I
