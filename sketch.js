@@ -1,6 +1,6 @@
 //constants
-const rows = 18;
-const cols = 10;
+const rows = 50;
+const cols = 30;
 const ratio = rows / cols;
 const canvasWidth = 300;
 const canvasHeight = ratio * canvasWidth;
@@ -79,7 +79,7 @@ let piece;
 let game;
 
 function setup() {
-  frameRate(15);
+  frameRate(5);
   createCanvas(canvasWidth, canvasHeight);
 
   game = new Game();
@@ -90,6 +90,7 @@ function setup() {
 function draw() {
   background(backgroundColor);
   game.update();
+  checkAccelerate();
 }
 
 function keyPressed() {
@@ -97,16 +98,20 @@ function keyPressed() {
     game.piece.applyRotation();
   }
 
-  if (keyCode === DOWN_ARROW) {
-    game.piece.accelerate();
-  }
-
   if (keyCode === LEFT_ARROW) {
-    game.piece.move(-1);
+    game.piece.moveLeft();
   }
 
   if (keyCode === RIGHT_ARROW) {
-    game.piece.move(1);
+    game.piece.moveRight();
+  }
+}
+
+function checkAccelerate() {
+  if (keyIsDown(DOWN_ARROW)) {
+    frameRate(15);
+  } else {
+    frameRate(5);
   }
 }
 
@@ -220,6 +225,38 @@ class Piece {
       cropped.push(croppedLines[i].slice(this.x1, this.x2 + 1));
     }
     return cropped;
+  }
+
+  moveLeft() {
+    for (let i = 0; i < rows; i++) {
+      for (let j = 0; j < cols; j++) {
+        if (this.board[i][j] > 0) {
+          if (j - 1 < 0) {
+            return;
+          }
+          this.board[i][j - 1] = this.board[i][j];
+          this.board[i][j] = 0;
+        }
+      }
+    }
+    this.x1 -= 1;
+    this.x2 -= 1;
+  }
+
+  moveRight() {
+    for (let i = 0; i < rows; i++) {
+      for (let j = cols - 1; j >= 0; j--) {
+        if (this.board[i][j] > 0) {
+          if (j + 1 >= cols) {
+            return;
+          }
+          this.board[i][j + 1] = this.board[i][j];
+          this.board[i][j] = 0;
+        }
+      }
+    }
+    this.x1 += 1;
+    this.x2 += 1;
   }
 
   rotatePiece(matrix) {
