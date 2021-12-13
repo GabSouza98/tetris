@@ -128,10 +128,18 @@ class Game {
   }
 
   update() {
-    this.piece.update();
+
+    if(this.piece.touchFloor()) {          
+      this.board.consume(this.piece);
+      this.piece = new Piece();
+    } else {
+      this.piece.applyGravity();      
+    }
+    
     this.piece.draw();
     this.board.drawGrid();
     this.board.draw();
+    
   }
 }
 
@@ -192,15 +200,11 @@ class Piece {
       }
     }
     return b;
-  }
-
-  update() {
-    this.applyGravity();
-  }
+  }  
 
   applyGravity() {
     for (let i = rows - 1; i >= 0; i--) {
-      for (let j = 0; j < cols; j++) {
+      for (let j = 0; j < cols; j++) {        
         if (this.board[i][j] > 0) {
           if (i + 1 >= rows) {
             return;
@@ -213,6 +217,16 @@ class Piece {
     // Como a peça ta caindo 1 espaço toda vez que aplico gravidade, atualizo o y1 e y2 da posição da matriz da peça
     this.y1 += 1;
     this.y2 += 1;
+  }
+
+  touchFloor() {
+
+    for(let j=0; j<cols; j++) {
+      if(this.board[rows-1][j] > 0) {
+        return true;
+      }
+    }
+    return false;
   }
 
   cropPiece() {
@@ -308,15 +322,27 @@ class Board {
 
   createBoard() {
     let boxes = [];
-    let lineArray = [];
-    for (var i = 0; i < rows; i++) {
+    let lineArray = [];    
+
+    for (var i = 0; i < rows; i++) {    
       for (var j = 0; j < cols; j++) {
         lineArray.push(0);
-      }
-      boxes.push(lineArray);
-      lineArray = [];
+      } 
+      boxes.push(lineArray);   
+      lineArray = []   
     }
+    console.log(boxes)
     return boxes;
+  }
+
+  consume(piece) {
+    for (var i = 0; i < rows; i++) {
+      for (var j = 0; j < cols; j++) {
+        if(piece.board[i][j]>0) {
+          this.board[i][j] = piece.board[i][j];
+        }        
+      }
+    }    
   }
 
   drawGrid() {
@@ -335,13 +361,13 @@ class Board {
   }
 
   draw() {
-    for (var i in this.board) {
-      for (var j in this.board[i]) {
+    for (var i=0; i<rows; i++) {
+      for (var j=0; j<cols; j++) {       
         if (this.board[i][j] > 0) {
-          fill(150, 140, 130);
-          rect(i * this.boxSize, j * this.boxSize, this.boxSize, this.boxSize);
+          fill(40,120,120);
+          rect(i*this.boxSize, j*this.boxSize, this.boxSize, this.boxSize);
         }
       }
-    }
+    }   
   }
 }
