@@ -176,15 +176,13 @@ class Game {
 
     for (let i = 0; i < rows; i++) {
       for (let j = 0; j < cols; j++) {        
-        if (p.board[i][j] > 0) {
-          // if(i+1 < rows ) {
+        if (p.board[i][j] > 0) {          
             if( j-1<0 || j+1>cols-1) {
               continue;
             }
             if(b.board[i][j+1]>0 || b.board[i][j-1]>0) {           
               return true;                   
-            }
-          //}          
+            }                 
         }
       }
     } 
@@ -293,8 +291,8 @@ class Piece {
   }
 
   moveLeft() {
+    for (let j = 0; j < cols; j++) {
     for (let i = 0; i < rows; i++) {
-      for (let j = 0; j < cols; j++) {
         if (this.board[i][j] > 0) {
           if (j - 1 < 0) {
             return;
@@ -309,8 +307,8 @@ class Piece {
   }
 
   moveRight() {
+    for (let j = cols - 1; j >= 0; j--) {
     for (let i = 0; i < rows; i++) {
-      for (let j = cols - 1; j >= 0; j--) {
         if (this.board[i][j] > 0) {
           if (j + 1 >= cols) {
             return;
