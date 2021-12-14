@@ -99,11 +99,11 @@ function keyPressed() {
   }
 
   if (keyCode === LEFT_ARROW) {
-    game.piece.moveLeft();
+    game.movePieceLeft();
   }
 
   if (keyCode === RIGHT_ARROW) {
-    game.piece.moveRight();
+    game.movePieceRight();
   }
 }
 
@@ -128,9 +128,8 @@ class Game {
   }
 
   update() {
-
-    if(this.piece.touchFloor()) {          
-      this.board.consume(this.piece);
+    if(this.piece.touchFloor() || this.touchOtherPieceVertically(this.board, this.piece)) {          
+      this.board.consume(this.piece); 
       this.piece = new Piece();
     } else {
       this.piece.applyGravity();      
@@ -138,9 +137,61 @@ class Game {
     
     this.piece.draw();
     this.board.drawGrid();
-    this.board.draw();
-    
+    this.board.draw();    
   }
+
+  movePieceRight() {
+
+    if(this.touchOtherPieceHorizontally(this.board,this.piece)) {
+      return;
+    } 
+    this.piece.moveRight();
+    //
+  }
+
+  movePieceLeft() {
+    if(this.touchOtherPieceHorizontally(this.board,this.piece)) {
+      return;
+    } 
+    this.piece.moveLeft();
+  }
+
+  touchOtherPieceVertically(b, p) {
+
+    for (let i = rows - 1; i >= 0; i--) {
+      for (let j = 0; j < cols; j++) {        
+        if (p.board[i][j] > 0) {
+          if(i+1 < rows - 1) {
+            if(b.board[i+1][j]>0) {           
+              return true;                   
+            }
+          }          
+        }
+      }
+    } 
+    return false;
+  }
+
+  touchOtherPieceHorizontally(b, p) {
+
+    for (let i = 0; i < rows; i++) {
+      for (let j = 0; j < cols; j++) {        
+        if (p.board[i][j] > 0) {
+          // if(i+1 < rows ) {
+            if( j-1<0 || j+1>cols-1) {
+              continue;
+            }
+            if(b.board[i][j+1]>0 || b.board[i][j-1]>0) {           
+              return true;                   
+            }
+          //}          
+        }
+      }
+    } 
+    return false;
+  }
+
+
 }
 
 class Piece {
@@ -361,11 +412,12 @@ class Board {
   }
 
   draw() {
+    console.log(this.board);
     for (var i=0; i<rows; i++) {
       for (var j=0; j<cols; j++) {       
         if (this.board[i][j] > 0) {
           fill(40,120,120);
-          rect(i*this.boxSize, j*this.boxSize, this.boxSize, this.boxSize);
+          rect(j*this.boxSize, i*this.boxSize, this.boxSize, this.boxSize);
         }
       }
     }   
