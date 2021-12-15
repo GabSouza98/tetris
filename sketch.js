@@ -119,6 +119,8 @@ class Game {
   constructor() {
     this.piece = new Piece();
     this.board = new Board();
+    this.pieceLifespan = 0;
+    this.score = 0;
   }
 
   start() {
@@ -128,68 +130,77 @@ class Game {
   }
 
   update() {
-    if(this.piece.touchFloor() || this.touchOtherPieceVertically(this.board, this.piece)) {          
-      this.board.consume(this.piece); 
+    if (
+      this.piece.touchFloor() ||
+      this.touchOtherPieceVertically(this.board, this.piece)
+    ) {
+      this.board.consume(this.piece);
+      if (this.pieceLifespan == 0) {
+        this.gameOver();
+      }
       this.piece = new Piece();
+      this.pieceLifespan = 0;
     } else {
-      this.piece.applyGravity();      
+      this.piece.applyGravity();
+      this.pieceLifespan++;
     }
-    
+
     this.piece.draw();
     this.board.drawGrid();
-    this.board.draw();    
+    this.board.draw();
+  }
+
+  gameOver() {
+    background(255);
+    this.piece = new Piece();
+    this.board = new Board();
+    this.pieceLifespan = 0;
+    this.score = 0;
   }
 
   movePieceRight() {
-
-    if(this.touchOtherPieceHorizontally(this.board,this.piece)) {
+    if (this.touchOtherPieceHorizontally(this.board, this.piece)) {
       return;
-    } 
+    }
     this.piece.moveRight();
     //
   }
 
   movePieceLeft() {
-    if(this.touchOtherPieceHorizontally(this.board,this.piece)) {
+    if (this.touchOtherPieceHorizontally(this.board, this.piece)) {
       return;
-    } 
+    }
     this.piece.moveLeft();
   }
 
   touchOtherPieceVertically(b, p) {
-
     for (let i = rows - 1; i >= 0; i--) {
-      for (let j = 0; j < cols; j++) {        
+      for (let j = 0; j < cols; j++) {
         if (p.board[i][j] > 0) {
-          if(i+1 < rows - 1) {
-            if(b.board[i+1][j]>0) {           
-              return true;                   
-            }
-          }          
+          if (b.board[i + 1][j] > 0) {
+            return true;
+          }
         }
       }
-    } 
+    }
     return false;
   }
 
   touchOtherPieceHorizontally(b, p) {
-
     for (let i = 0; i < rows; i++) {
-      for (let j = 0; j < cols; j++) {        
-        if (p.board[i][j] > 0) {          
-            if( j-1<0 || j+1>cols-1) {
-              continue;
-            }
-            if(b.board[i][j+1]>0 || b.board[i][j-1]>0) {           
-              return true;                   
-            }                 
+      for (let j = 0; j < cols; j++) {
+        if (p.board[i][j] > 0) {
+          if (j - 1 < 0 || j + 1 > cols - 1) {
+            continue;
+          }
+          if (b.board[i][j + 1] > 0 || b.board[i][j - 1] > 0) {
+            return true;
+          }
         }
       }
-    } 
+    }
     return false;
   }
-
-
 }
 
 class Piece {
@@ -249,11 +260,11 @@ class Piece {
       }
     }
     return b;
-  }  
+  }
 
   applyGravity() {
     for (let i = rows - 1; i >= 0; i--) {
-      for (let j = 0; j < cols; j++) {        
+      for (let j = 0; j < cols; j++) {
         if (this.board[i][j] > 0) {
           if (i + 1 >= rows) {
             return;
@@ -269,9 +280,8 @@ class Piece {
   }
 
   touchFloor() {
-
-    for(let j=0; j<cols; j++) {
-      if(this.board[rows-1][j] > 0) {
+    for (let j = 0; j < cols; j++) {
+      if (this.board[rows - 1][j] > 0) {
         return true;
       }
     }
@@ -292,7 +302,7 @@ class Piece {
 
   moveLeft() {
     for (let j = 0; j < cols; j++) {
-    for (let i = 0; i < rows; i++) {
+      for (let i = 0; i < rows; i++) {
         if (this.board[i][j] > 0) {
           if (j - 1 < 0) {
             return;
@@ -308,7 +318,7 @@ class Piece {
 
   moveRight() {
     for (let j = cols - 1; j >= 0; j--) {
-    for (let i = 0; i < rows; i++) {
+      for (let i = 0; i < rows; i++) {
         if (this.board[i][j] > 0) {
           if (j + 1 >= cols) {
             return;
@@ -371,27 +381,26 @@ class Board {
 
   createBoard() {
     let boxes = [];
-    let lineArray = [];    
+    let lineArray = [];
 
-    for (var i = 0; i < rows; i++) {    
+    for (var i = 0; i < rows; i++) {
       for (var j = 0; j < cols; j++) {
         lineArray.push(0);
-      } 
-      boxes.push(lineArray);   
-      lineArray = []   
+      }
+      boxes.push(lineArray);
+      lineArray = [];
     }
-    console.log(boxes)
     return boxes;
   }
 
   consume(piece) {
     for (var i = 0; i < rows; i++) {
       for (var j = 0; j < cols; j++) {
-        if(piece.board[i][j]>0) {
+        if (piece.board[i][j] > 0) {
           this.board[i][j] = piece.board[i][j];
-        }        
+        }
       }
-    }    
+    }
   }
 
   drawGrid() {
@@ -410,14 +419,13 @@ class Board {
   }
 
   draw() {
-    console.log(this.board);
-    for (var i=0; i<rows; i++) {
-      for (var j=0; j<cols; j++) {       
+    for (var i = 0; i < rows; i++) {
+      for (var j = 0; j < cols; j++) {
         if (this.board[i][j] > 0) {
-          fill(40,120,120);
-          rect(j*this.boxSize, i*this.boxSize, this.boxSize, this.boxSize);
+          fill(40, 120, 120);
+          rect(j * this.boxSize, i * this.boxSize, this.boxSize, this.boxSize);
         }
       }
-    }   
+    }
   }
 }
