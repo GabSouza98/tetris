@@ -127,16 +127,17 @@ class Game {
     this.board.drawGrid();
     this.board.draw();
     this.piece.draw();
-  }  
+  }
 
-  update() {  
-
-    if (this.piece.touchFloor() || this.touchOtherPieceVertically(this.board, this.piece)) {
+  update() {
+    if (
+      this.piece.touchFloor() ||
+      this.touchOtherPieceVertically(this.board, this.piece)
+    ) {
       this.board.consume(this.piece);
-      
+
       this.score += this.board.deleteLines();
-      console.log(this.score);
-    
+
       if (this.pieceLifespan == 0) {
         this.gameOver();
       }
@@ -405,40 +406,35 @@ class Board {
     }
   }
 
-  // lineCompleted() {    
-  //   for (var i = 0; i < rows; i++) {        
+  // lineCompleted() {
+  //   for (var i = 0; i < rows; i++) {
   //       if(this.board[i].every(element => element>0)) {
   //         return true;
-  //       }      
+  //       }
   //   }
   //   return false;
   // }
 
   deleteLines() {
-    let score = 0;    
-    for (var i = 0; i < rows; i++) {  
-           
-      if(this.board[i].every(element => element>0)) {    
-       
-        let newTopLine = new Array(rows).fill(0);          
-        let aboveLines = this.board.slice(0,i); 
-        let updatedBoard;        
-        if (i+1 < rows) {   
-        let belowLines = this.board.slice(i+1,rows);
-        console.log(belowLines);
-        updatedBoard = belowLines.unshift(newTopLine,aboveLines);
+    let score = 0;
+    for (var i = 0; i < rows; i++) {
+      if (this.board[i].every((element) => element > 0)) {
+        let newTopLine = new Array(rows).fill(0);
+        let aboveLines = this.board.slice(0, i);
+        let updatedBoard;
+        if (i + 1 < rows) {
+          let belowLines = this.board.slice(i + 1, rows);
+          updatedBoard = [newTopLine, ...aboveLines, ...belowLines];
         } else {
-          updatedBoard = aboveLines.unshift(newTopLine);
+          updatedBoard = [newTopLine, ...aboveLines];
         }
-        
-        
+
         this.board = updatedBoard;
         score++;
-      }      
+      }
     }
     return score;
   }
-
 
   drawGrid() {
     //desenha linhas horizontais
