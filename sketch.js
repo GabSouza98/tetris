@@ -136,7 +136,7 @@ class Game {
     ) {
       this.board.consume(this.piece);
 
-      this.score += this.board.deleteLines();
+      this.score += this.board.getScore();
 
       if (this.pieceLifespan == 0) {
         this.gameOver();
@@ -406,21 +406,25 @@ class Board {
     }
   }
 
-  deleteLines() {
+  deleteLine(i) {
+    let newTopLine = new Array(rows).fill(0);
+    let aboveLines = this.board.slice(0, i);
+    let updatedBoard;
+    if (i + 1 < rows) {
+      let belowLines = this.board.slice(i + 1, rows);
+      updatedBoard = [newTopLine, ...aboveLines, ...belowLines];
+    } else {
+      updatedBoard = [newTopLine, ...aboveLines];
+    }
+
+    this.board = updatedBoard;
+  }
+
+  getScore() {
     let score = 0;
     for (var i = 0; i < rows; i++) {
       if (this.board[i].every((element) => element > 0)) {
-        let newTopLine = new Array(rows).fill(0);
-        let aboveLines = this.board.slice(0, i);
-        let updatedBoard;
-        if (i + 1 < rows) {
-          let belowLines = this.board.slice(i + 1, rows);
-          updatedBoard = [newTopLine, ...aboveLines, ...belowLines];
-        } else {
-          updatedBoard = [newTopLine, ...aboveLines];
-        }
-
-        this.board = updatedBoard;
+        this.deleteLine(i);
         score++;
       }
     }
