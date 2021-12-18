@@ -406,15 +406,6 @@ class Board {
     }
   }
 
-  // lineCompleted() {
-  //   for (var i = 0; i < rows; i++) {
-  //       if(this.board[i].every(element => element>0)) {
-  //         return true;
-  //       }
-  //   }
-  //   return false;
-  // }
-
   deleteLines() {
     let score = 0;
     for (var i = 0; i < rows; i++) {
