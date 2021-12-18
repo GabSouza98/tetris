@@ -342,6 +342,7 @@ class Piece {
     return rotated;
   }
 
+  // TODO: Isso precisa receber o board do board e ver se pode rotacionar
   applyRotation() {
     let croppedPiece = this.cropPiece();
 
