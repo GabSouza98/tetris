@@ -1,11 +1,13 @@
 //constants
-const rows = 18;
+const rows = 20;
 const cols = 10;
 const ratio = rows / cols;
 const canvasWidth = 300;
 const canvasHeight = ratio * canvasWidth;
 const backgroundColor = 50;
-const speed = 50;
+const speed = 5;
+const STROKE = 20;
+const STROKEWEIGHT = 1.5;
 
 const pieces = {
   1: {
@@ -95,7 +97,7 @@ function draw() {
 
 function keyPressed() {
   if (keyCode === UP_ARROW) {
-    game.piece.applyRotation();
+    game.piece.applyRotation(game.board.board);
   }
 
   if (keyCode === LEFT_ARROW) {
@@ -111,7 +113,7 @@ function checkAccelerate() {
   if (keyIsDown(DOWN_ARROW)) {
     frameRate(15);
   } else {
-    frameRate(5);
+    frameRate(speed);
   }
 }
 
@@ -132,8 +134,9 @@ class Game {
   update() {
     if (
       this.piece.touchFloor() ||
-      this.touchOtherPieceVertically(this.board, this.piece)
+      this.touchOtherPieceVertically(this.board, this.piece)      
     ) {
+      console.log("TESTANDO ERRO")
       this.board.consume(this.piece);
 
       this.score += this.board.getScore();
@@ -343,19 +346,44 @@ class Piece {
   }
 
   // TODO: Isso precisa receber o board do board e ver se pode rotacionar
-  applyRotation() {
+  applyRotation(gameBoard) {
     let croppedPiece = this.cropPiece();
-
     this.board = this.generateBoard();
-
     let rotated = this.rotatePiece(croppedPiece);
 
-    let pieceSize = croppedPiece.length;
-    for (let i = 0; i < pieceSize; i++) {
-      for (let j = 0; j < pieceSize; j++) {
-        this.board[i + this.y1][j + this.x1] = rotated[i][j];
-      }
+    let croppedLines;
+    let croppedBoard = [];
+
+    croppedLines = gameBoard.slice(this.y1, this.y2 + 1);
+
+    for (let i in croppedLines) {
+      croppedBoard.push(croppedLines[i].slice(this.x1, this.x2 + 1));
     }
+      
+
+    let canRotate = true;    
+    for(let j = 0; j<rotated.length; j++) {
+      for(let i = 0; i<rotated.length; i++) {
+        if(croppedBoard[i][j]>0 && rotated[i][j]>0){
+          canRotate = false;
+        }
+      }
+    }    
+    
+    let pieceSize = croppedPiece.length;
+    if(canRotate) {
+      for (let i = 0; i < pieceSize; i++) {
+        for (let j = 0; j < pieceSize; j++) {        
+          this.board[i + this.y1][j + this.x1] = rotated[i][j];
+        }
+      } 
+    } else {
+      for (let i = 0; i < pieceSize; i++) {
+        for (let j = 0; j < pieceSize; j++) {        
+          this.board[i + this.y1][j + this.x1] = croppedPiece[i][j];
+        }
+      } 
+    }    
   }
 
   draw() {
@@ -435,14 +463,14 @@ class Board {
   drawGrid() {
     //desenha linhas horizontais
     for (var i = 0; i <= rows; i++) {
-      stroke(20);
-      strokeWeight(0.5);
+      stroke(STROKE);
+      strokeWeight(STROKEWEIGHT);
       line(0, i * this.boxSize, canvasWidth, i * this.boxSize);
     }
     //desenha linhas verticais
     for (var j = 0; j <= cols; j++) {
-      stroke(20);
-      strokeWeight(0.5);
+      stroke(STROKE);
+      strokeWeight(STROKEWEIGHT);
       line(j * this.boxSize, 0, j * this.boxSize, canvasHeight);
     }
   }
@@ -451,7 +479,10 @@ class Board {
     for (var i = 0; i < rows; i++) {
       for (var j = 0; j < cols; j++) {
         if (this.board[i][j] > 0) {
-          fill(40, 120, 120);
+          let pieceNumber = this.board[i][j];
+          let color = pieces[pieceNumber].color + "CC"
+          //let color = pieces[pieceNumber].color
+          fill(color);
           rect(j * this.boxSize, i * this.boxSize, this.boxSize, this.boxSize);
         }
       }
