@@ -67,8 +67,8 @@ const pieces = {
     name: "I",
     color: "#00e4ff",
     matrix: [
-      [1, 1, 1, 1],
       [0, 0, 0, 0],
+      [1, 1, 1, 1],
       [0, 0, 0, 0],
       [0, 0, 0, 0],
     ],
@@ -268,7 +268,7 @@ class Piece {
     return b;
   }
 
-  applyGravity() {
+  applyGravity() {    
     for (let i = rows - 1; i >= 0; i--) {
       for (let j = 0; j < cols; j++) {
         if (this.board[i][j] > 0) {
@@ -300,10 +300,16 @@ class Piece {
 
     croppedLines = this.board.slice(this.y1, this.y2 + 1);
 
-    for (let i in croppedLines) {
-      cropped.push(croppedLines[i].slice(this.x1, this.x2 + 1));
+    //o cropped está retornando vazio caso x1<0
+    if(this.x1 >= 0) {
+      for (let i in croppedLines) {
+        cropped.push(croppedLines[i].slice(this.x1, this.x2 + 1));
+      }
+      console.log(cropped);
+      return cropped;
+    } else {      
+      return null;
     }
-    return cropped;
   }
 
   moveLeft() {
@@ -317,9 +323,11 @@ class Piece {
           this.board[i][j] = 0;
         }
       }
-    }
+    }   
+    
     this.x1 -= 1;
     this.x2 -= 1;
+        
   }
 
   moveRight() {
@@ -335,7 +343,7 @@ class Piece {
       }
     }
     this.x1 += 1;
-    this.x2 += 1;
+    this.x2 += 1;    
   }
 
   rotatePiece(matrix) {
@@ -345,42 +353,53 @@ class Piece {
     return rotated;
   }
 
-  // TODO: Isso precisa receber o board do board e ver se pode rotacionar
+  
   applyRotation(gameBoard) {
     let croppedPiece = this.cropPiece();
+    if(croppedPiece===null) {
+      return;
+    }
     this.board = this.generateBoard();
     let rotated = this.rotatePiece(croppedPiece);
 
+    //Cria uma matriz pequena de onde a peça estaria no Board
     let croppedLines;
     let croppedBoard = [];
-
     croppedLines = gameBoard.slice(this.y1, this.y2 + 1);
-
     for (let i in croppedLines) {
       croppedBoard.push(croppedLines[i].slice(this.x1, this.x2 + 1));
-    }
-      
+    }      
 
-    let canRotate = true;    
+    let canRotate = true;   
+            
     for(let j = 0; j<rotated.length; j++) {
       for(let i = 0; i<rotated.length; i++) {
-        if(croppedBoard[i][j]>0 && rotated[i][j]>0){
+        
+        
+        if((croppedBoard[i][j]>0 && rotated[i][j]>0) ||
+          this.x1 < 0   ||
+          this.x2 >= cols ){
           canRotate = false;
-        }
+        }      
+
       }
     }    
+
+    console.log("CAN ROTATE =", canRotate);
     
     let pieceSize = croppedPiece.length;
     if(canRotate) {
       for (let i = 0; i < pieceSize; i++) {
-        for (let j = 0; j < pieceSize; j++) {        
+        for (let j = 0; j < pieceSize; j++) {     
           this.board[i + this.y1][j + this.x1] = rotated[i][j];
         }
       } 
     } else {
       for (let i = 0; i < pieceSize; i++) {
-        for (let j = 0; j < pieceSize; j++) {        
-          this.board[i + this.y1][j + this.x1] = croppedPiece[i][j];
+        for (let j = 0; j < pieceSize; j++) {
+         
+            this.board[i + this.y1][j + this.x1] = croppedPiece[i][j];
+                            
         }
       } 
     }    
