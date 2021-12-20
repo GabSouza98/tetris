@@ -1,0 +1,41 @@
+class Board {
+  constructor() {
+    this.board = this.createEmptyBoard();
+    this.boxHeight = canvasHeight / ROWS;
+    this.boxWidth = canvasWidth / COLS;
+    this.boxSize = Math.floor(this.boxHeight, this.boxWidth);
+  }
+
+  createEmptyBoard() {
+    let board = new Array(ROWS).fill(0).map(() => Array(COLS).fill(0));
+    return board;
+  }
+
+  drawGrid() {
+    //desenha linhas horizontais
+    for (var i = 0; i <= ROWS; i++) {
+      stroke(STROKE);
+      strokeWeight(STROKEWEIGHT);
+      line(0, i * this.boxSize, canvasWidth, i * this.boxSize);
+    }
+    //desenha linhas verticais
+    for (var j = 0; j <= COLS; j++) {
+      stroke(STROKE);
+      strokeWeight(STROKEWEIGHT);
+      line(j * this.boxSize, 0, j * this.boxSize, canvasHeight);
+    }
+  }
+
+  draw() {
+    for (var i = 0; i < ROWS; i++) {
+      for (var j = 0; j < COLS; j++) {
+        if (this.board[i][j] > 0) {
+          let pieceNumber = this.board[i][j];
+          let color = pieces[pieceNumber].color + "CC";
+          fill(color);
+          rect(j * this.boxSize, i * this.boxSize, this.boxSize, this.boxSize);
+        }
+      }
+    }
+  }
+}
