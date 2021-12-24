@@ -28,22 +28,26 @@ class Board {
   }
 
   drawGrid() {
-    //desenha linhas horizontais
-    for (var i = 0; i <= ROWS; i++) {
+    // Desenha linhas horizontais
+    for (var i = EXTRAROWS; i <= ROWS; i++) {
       stroke(STROKE);
       strokeWeight(STROKEWEIGHT);
       line(0, i * this.boxSize, canvasWidth, i * this.boxSize);
     }
-    //desenha linhas verticais
+
+    // Desenha linhas verticais
+    // Como precisa ignorar as duas linhas "escondidas" no topo,
+    // preciso começar de um ponto mais abaixo no canvas
+    let startingPoint = EXTRAROWS * this.boxSize;
     for (var j = 0; j <= COLS; j++) {
       stroke(STROKE);
       strokeWeight(STROKEWEIGHT);
-      line(j * this.boxSize, 0, j * this.boxSize, canvasHeight);
+      line(j * this.boxSize, startingPoint, j * this.boxSize, canvasHeight);
     }
   }
 
   draw() {
-    for (var i = 0; i < ROWS; i++) {
+    for (var i = EXTRAROWS; i < ROWS; i++) {
       for (var j = 0; j < COLS; j++) {
         if (this.board[i][j] > 0) {
           let pieceNumber = this.board[i][j];

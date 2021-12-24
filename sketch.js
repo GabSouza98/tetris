@@ -1,5 +1,8 @@
+// Invisible rows at the top, so the pieces have space to rotate and spawn properly
+const EXTRAROWS = 2;
+
 //constants
-const ROWS = 20;
+const ROWS = 20 + EXTRAROWS;
 const COLS = 10;
 const RATIO = ROWS / COLS;
 const canvasWidth = 300;
@@ -9,8 +12,6 @@ const speed = 5;
 const STROKE = 20;
 const STROKEWEIGHT = 1.5;
 
-// let pieceBoard;
-// let gameBoard;
 let controller;
 
 function setup() {
@@ -20,26 +21,15 @@ function setup() {
 
   controller = new Controller();
   controller.start();
-  // pieceBoard = new PieceBoard();
-  // pieceBoard.spawnPiece();
-  // console.log(pieceBoard.piece);
-  // console.log(pieceBoard.board);
-  // gameBoard = new GameBoard();
 }
 
 function draw() {
   background(backgroundColor);
   controller.update();
-  // gameBoard.drawGrid();
-  // pieceBoard.draw();
-  // gameBoard.draw();
-
-  // pieceBoard.applyGravity();
 }
 
 function keyPressed() {
   if (keyCode === UP_ARROW) {
-    // controller.pieceBoard.applyRotation(controller.gameBoard.board);
     controller.rotatePiece();
   }
 
