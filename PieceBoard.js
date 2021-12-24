@@ -76,7 +76,6 @@ class PieceBoard extends Board {
 
     this.pieceNumber = this.generatePieceNumber();
     this.piece = pieces[this.pieceNumber];
-    // this.board = this.startBoard();
   }
 
   generatePieceNumber() {
@@ -132,84 +131,11 @@ class PieceBoard extends Board {
     return false;
   }
 
-  cropPiece(board, x1, y1, x2, y2) {
-    //   TODO: Revisar quando o board for maior
-    let croppedLines;
-    let cropped = [];
-
-    croppedLines = board.slice(y1, y2 + 1);
-
-    //o cropped está retornando vazio caso x1<0
-    if (x1 >= 0) {
-      for (let i in croppedLines) {
-        cropped.push(croppedLines[i].slice(x1, x2 + 1));
-      }
-      return cropped;
-    } else {
-      return null;
-    }
-  }
-
-  rotatePiece(matrix) {
+  rotateMatrix(matrix) {
     let rotated = matrix[0].map((line, index) =>
       matrix.map((row) => row[index]).reverse()
     );
     return rotated;
-  }
-
-  applyRotation(gameBoard) {
-    //   TODO: Arrumar aqui pra checar se deve rotacionar
-    let croppedPiece = this.cropPiece(
-      this.board,
-      this.x1,
-      this.y1,
-      this.x2,
-      this.y2
-    );
-    if (croppedPiece === null) {
-      return;
-    }
-    this.board = this.generateBoard();
-    let rotated = this.rotatePiece(croppedPiece);
-
-    // //Cria uma matriz pequena de onde a peça estaria no Board
-    // let croppedLines;
-    // let croppedBoard = [];
-    // croppedLines = gameBoard.slice(this.y1, this.y2 + 1);
-    // for (let i in croppedLines) {
-    //   croppedBoard.push(croppedLines[i].slice(this.x1, this.x2 + 1));
-    // }
-
-    // let canRotate = true;
-
-    // for (let j = 0; j < rotated.length; j++) {
-    //   for (let i = 0; i < rotated.length; i++) {
-    //     if (
-    //       (croppedBoard[i][j] > 0 && rotated[i][j] > 0) ||
-    //       this.x1 < 0 ||
-    //       this.x2 >= cols
-    //     ) {
-    //       canRotate = false;
-    //     }
-    //   }
-    // }
-
-    // console.log("CAN ROTATE =", canRotate);
-
-    // let pieceSize = croppedPiece.length;
-    // if (canRotate) {
-    for (let i = 0; i < pieceSize; i++) {
-      for (let j = 0; j < pieceSize; j++) {
-        this.board[i + this.y1][j + this.x1] = rotated[i][j];
-      }
-    }
-    // } else {
-    //   for (let i = 0; i < pieceSize; i++) {
-    //     for (let j = 0; j < pieceSize; j++) {
-    //       this.board[i + this.y1][j + this.x1] = croppedPiece[i][j];
-    //     }
-    //   }
-    // }
   }
 
   moveLeft() {
@@ -243,5 +169,20 @@ class PieceBoard extends Board {
     }
     this.x1 += 1;
     this.x2 += 1;
+  }
+
+  rotate() {
+    let croppedPiece = this.cropBoard(this.x1, this.y1, this.x2, this.y2);
+    let rotated = this.rotateMatrix(croppedPiece);
+
+    // Limpa o board pra sobreescrever com a versão rotacionada
+    this.cleanBoard();
+
+    let pieceSize = croppedPiece.length;
+    for (let i = 0; i < pieceSize; i++) {
+      for (let j = 0; j < pieceSize; j++) {
+        this.board[i + this.y1][j + this.x1] = rotated[i][j];
+      }
+    }
   }
 }

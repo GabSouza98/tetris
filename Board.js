@@ -11,6 +11,22 @@ class Board {
     return board;
   }
 
+  cleanBoard() {
+    this.board = this.createEmptyBoard();
+  }
+
+  cropBoard(x1, y1, x2, y2) {
+    let croppedLines;
+    let cropped = [];
+
+    croppedLines = this.board.slice(y1, y2 + 1);
+
+    for (let i in croppedLines) {
+      cropped.push(croppedLines[i].slice(x1, x2 + 1));
+    }
+    return cropped;
+  }
+
   drawGrid() {
     //desenha linhas horizontais
     for (var i = 0; i <= ROWS; i++) {

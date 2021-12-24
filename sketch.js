@@ -39,7 +39,8 @@ function draw() {
 
 function keyPressed() {
   if (keyCode === UP_ARROW) {
-    controller.pieceBoard.applyRotation(controller.gameBoard.board);
+    // controller.pieceBoard.applyRotation(controller.gameBoard.board);
+    controller.rotatePiece();
   }
 
   if (keyCode === LEFT_ARROW) {

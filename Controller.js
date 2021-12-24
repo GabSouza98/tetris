@@ -61,6 +61,12 @@ class Controller {
     this.pieceBoard.moveLeft();
   }
 
+  rotatePiece() {
+    if (this.pieceCanRotate()) {
+      this.pieceBoard.rotate();
+    }
+  }
+
   touchOtherPieceVertically(gameBoard, pieceBoard) {
     for (let i = ROWS - 1; i >= 0; i--) {
       for (let j = 0; j < COLS; j++) {
@@ -88,5 +94,43 @@ class Controller {
       }
     }
     return false;
+  }
+
+  pieceCanRotate() {
+    if (this.pieceBoard.x1 < 0) {
+      return false;
+    }
+
+    // Corta a peça do seu board, na sua posição atual
+    let croppedPiece = this.pieceBoard.cropBoard(
+      this.pieceBoard.x1,
+      this.pieceBoard.y1,
+      this.pieceBoard.x2,
+      this.pieceBoard.y2
+    );
+
+    // Aplica a rotação na peça atual
+    let rotated = this.pieceBoard.rotateMatrix(croppedPiece);
+
+    // Pega a mesma posição da peça porém no gameBoard
+    let croppedBoard = this.gameBoard.cropBoard(
+      this.pieceBoard.x1,
+      this.pieceBoard.y1,
+      this.pieceBoard.x2,
+      this.pieceBoard.y2
+    );
+
+    for (let j = 0; j < rotated.length; j++) {
+      for (let i = 0; i < rotated.length; i++) {
+        if (
+          (croppedBoard[i][j] > 0 && rotated[i][j] > 0) ||
+          this.pieceBoard.x1 < 0 ||
+          this.pieceBoard.x2 >= COLS
+        ) {
+          return false;
+        }
+      }
+    }
+    return true;
   }
 }
