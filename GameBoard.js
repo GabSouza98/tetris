@@ -3,8 +3,8 @@ class GameBoard extends Board {
     super();
   }
 
-  consume(piece) {
-    piece.map((row, i) =>
+  consume(pieceBoard) {
+    pieceBoard.board.map((row, i) =>
       row.map((elem, j) => {
         if (elem > 0) {
           this.board[i][j] = elem;

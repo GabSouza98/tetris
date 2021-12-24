@@ -159,7 +159,13 @@ class PieceBoard extends Board {
 
   applyRotation(gameBoard) {
     //   TODO: Arrumar aqui pra checar se deve rotacionar
-    let croppedPiece = this.cropPiece();
+    let croppedPiece = this.cropPiece(
+      this.board,
+      this.x1,
+      this.y1,
+      this.x2,
+      this.y2
+    );
     if (croppedPiece === null) {
       return;
     }

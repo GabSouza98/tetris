@@ -9,26 +9,52 @@ const speed = 5;
 const STROKE = 20;
 const STROKEWEIGHT = 1.5;
 
-let pieceBoard;
-let gameBoard;
+// let pieceBoard;
+// let gameBoard;
+let controller;
 
 function setup() {
   frameRate(5);
   createCanvas(canvasWidth, canvasHeight);
   background(backgroundColor);
 
-  pieceBoard = new PieceBoard();
-  pieceBoard.spawnPiece();
-  console.log(pieceBoard.piece);
-  console.log(pieceBoard.board);
-  gameBoard = new GameBoard();
+  controller = new Controller();
+  controller.start();
+  // pieceBoard = new PieceBoard();
+  // pieceBoard.spawnPiece();
+  // console.log(pieceBoard.piece);
+  // console.log(pieceBoard.board);
+  // gameBoard = new GameBoard();
 }
 
 function draw() {
   background(backgroundColor);
-  gameBoard.drawGrid();
-  pieceBoard.draw();
+  controller.update();
+  // gameBoard.drawGrid();
+  // pieceBoard.draw();
   // gameBoard.draw();
 
-  pieceBoard.applyGravity();
+  // pieceBoard.applyGravity();
+}
+
+function keyPressed() {
+  if (keyCode === UP_ARROW) {
+    controller.pieceBoard.applyRotation(controller.gameBoard.board);
+  }
+
+  if (keyCode === LEFT_ARROW) {
+    controller.movePieceLeft();
+  }
+
+  if (keyCode === RIGHT_ARROW) {
+    controller.movePieceRight();
+  }
+}
+
+function checkAccelerate() {
+  if (keyIsDown(DOWN_ARROW)) {
+    frameRate(15);
+  } else {
+    frameRate(speed);
+  }
 }
