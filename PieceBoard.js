@@ -84,6 +84,9 @@ class PieceBoard extends Board {
   }
 
   spawnPiece() {
+    // TODO: Ver se da pra fazer a peça spawnr um pouco mais pra baixo?
+    // Ou isso vai depender da matriz da peça?
+
     let middleCol = Math.floor(COLS / 2);
 
     // Gravando o ponto inicial (topo-esquerdo) da matriz do piece

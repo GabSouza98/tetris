@@ -1,30 +1,40 @@
-// Invisible rows at the top, so the pieces have space to rotate and spawn properly
-const EXTRAROWS = 2;
+// CANVAS CONFIG
+const CANVAS_HEIGHT = 1500;
+const CANVAS_WIDTH = 800;
 
-//constants
-const ROWS = 20 + EXTRAROWS;
+// BOARD CONFIG
+const EXTRA_ROWS = 2;
+const ROWS = 20 + EXTRA_ROWS;
 const COLS = 10;
 const RATIO = ROWS / COLS;
-const canvasWidth = 300;
-const canvasHeight = RATIO * canvasWidth;
-const backgroundColor = 50;
-const speed = 5;
+
+const BOX_SIZE = 50;
+const BOARD_X1 = 150;
+const BOARD_Y1 = 50;
+const BOARD_WIDTH = COLS * BOX_SIZE;
+const BOARD_HEIGHT = (ROWS - EXTRA_ROWS) * BOX_SIZE;
+
+// DRAW CONFIG
+const BACKGROUND_COLOR = 50;
 const STROKE = 20;
-const STROKEWEIGHT = 1.5;
+const STROKE_WEIGHT = 1.5;
+
+// GAME CONFIG
+const SPEED = 5;
 
 let controller;
 
 function setup() {
   frameRate(5);
-  createCanvas(canvasWidth, canvasHeight);
-  background(backgroundColor);
+  createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
+  background(BACKGROUND_COLOR);
 
   controller = new Controller();
   controller.start();
 }
 
 function draw() {
-  background(backgroundColor);
+  background(BACKGROUND_COLOR);
   controller.update();
 }
 
@@ -46,6 +56,6 @@ function checkAccelerate() {
   if (keyIsDown(DOWN_ARROW)) {
     frameRate(15);
   } else {
-    frameRate(speed);
+    frameRate(SPEED);
   }
 }

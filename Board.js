@@ -1,9 +1,6 @@
 class Board {
   constructor() {
     this.board = this.createEmptyBoard();
-    this.boxHeight = canvasHeight / ROWS;
-    this.boxWidth = canvasWidth / COLS;
-    this.boxSize = Math.floor(this.boxHeight, this.boxWidth);
   }
 
   createEmptyBoard() {
@@ -28,32 +25,44 @@ class Board {
   }
 
   drawGrid() {
-    // Desenha linhas horizontais
-    for (var i = EXTRAROWS; i <= ROWS; i++) {
+    // Draw horizontal lines
+    for (let i = 0; i < ROWS - (EXTRA_ROWS - 1); i++) {
+      let x1 = BOARD_X1;
+      let y1 = BOARD_Y1 + i * BOX_SIZE;
+      let x2 = BOARD_X1 + BOARD_WIDTH;
+      let y2 = y1;
+
       stroke(STROKE);
-      strokeWeight(STROKEWEIGHT);
-      line(0, i * this.boxSize, canvasWidth, i * this.boxSize);
+      strokeWeight(STROKE_WEIGHT);
+      line(x1, y1, x2, y2);
     }
 
-    // Desenha linhas verticais
-    // Como precisa ignorar as duas linhas "escondidas" no topo,
-    // preciso começar de um ponto mais abaixo no canvas
-    let startingPoint = EXTRAROWS * this.boxSize;
-    for (var j = 0; j <= COLS; j++) {
+    // Draw vertical lines
+    for (let j = 0; j < COLS + 1; j++) {
+      let x1 = BOARD_X1 + j * BOX_SIZE;
+      let y1 = BOARD_Y1;
+      let x2 = x1;
+      let y2 = BOARD_Y1 + BOARD_HEIGHT;
+
       stroke(STROKE);
-      strokeWeight(STROKEWEIGHT);
-      line(j * this.boxSize, startingPoint, j * this.boxSize, canvasHeight);
+      strokeWeight(STROKE_WEIGHT);
+      line(x1, y1, x2, y2);
     }
   }
 
   draw() {
-    for (var i = EXTRAROWS; i < ROWS; i++) {
+    // Starts at EXTRA_ROWS, since are the hidden ones
+    for (var i = EXTRA_ROWS; i < ROWS; i++) {
       for (var j = 0; j < COLS; j++) {
         if (this.board[i][j] > 0) {
+          // Subtracts EXTRA_ROWS, so in the beggining in multiplies by 0
+          let x1 = BOARD_X1 + j * BOX_SIZE;
+          let y1 = BOARD_Y1 + (i - EXTRA_ROWS) * BOX_SIZE;
+
           let pieceNumber = this.board[i][j];
           let color = pieces[pieceNumber].color + "CC";
           fill(color);
-          rect(j * this.boxSize, i * this.boxSize, this.boxSize, this.boxSize);
+          rect(x1, y1, BOX_SIZE, BOX_SIZE);
         }
       }
     }
