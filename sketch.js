@@ -1,6 +1,6 @@
 // CANVAS CONFIG
 const CANVAS_HEIGHT = 1500;
-const CANVAS_WIDTH = 800;
+const CANVAS_WIDTH = 700;
 
 // BOARD CONFIG
 const EXTRA_ROWS = 2;
@@ -9,7 +9,7 @@ const COLS = 10;
 const RATIO = ROWS / COLS;
 
 const BOX_SIZE = 50;
-const BOARD_X1 = 150;
+const BOARD_X1 = 50;
 const BOARD_Y1 = 50;
 const BOARD_WIDTH = COLS * BOX_SIZE;
 const BOARD_HEIGHT = (ROWS - EXTRA_ROWS) * BOX_SIZE;
@@ -36,6 +36,7 @@ function setup() {
 function draw() {
   background(BACKGROUND_COLOR);
   controller.update();
+  checkAccelerate();
 }
 
 function keyPressed() {
