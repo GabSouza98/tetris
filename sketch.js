@@ -36,7 +36,7 @@ function setup() {
 function draw() {
   background(BACKGROUND_COLOR);
   controller.update();
-  checkAccelerate();
+  checkKeyDown();
 }
 
 function keyPressed() {
@@ -53,10 +53,18 @@ function keyPressed() {
   }
 }
 
-function checkAccelerate() {
+function checkKeyDown() {
   if (keyIsDown(DOWN_ARROW)) {
     frameRate(15);
   } else {
     frameRate(SPEED);
+  }
+
+  if (keyIsDown(LEFT_ARROW)) {
+    controller.movePieceLeft();
+  }
+
+  if (keyIsDown(RIGHT_ARROW)) {
+    controller.movePieceRight();
   }
 }
