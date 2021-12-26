@@ -19,7 +19,7 @@ class GameBoard extends Board {
     let aboveLines = this.board.slice(0, index);
     let updatedBoard;
     if (index + 1 < ROWS) {
-      let belowLines = this.board.slice(i + 1, ROWS);
+      let belowLines = this.board.slice(index + 1, ROWS);
       updatedBoard = [newTopLine, ...aboveLines, ...belowLines];
     } else {
       updatedBoard = [newTopLine, ...aboveLines];

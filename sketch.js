@@ -1,6 +1,6 @@
 // CANVAS CONFIG
-const CANVAS_HEIGHT = 1500;
-const CANVAS_WIDTH = 700;
+const CANVAS_HEIGHT = 650;
+const CANVAS_WIDTH = 1300;
 
 // BOARD CONFIG
 const EXTRA_ROWS = 2;
@@ -8,9 +8,9 @@ const ROWS = 20 + EXTRA_ROWS;
 const COLS = 10;
 const RATIO = ROWS / COLS;
 
-const BOX_SIZE = 50;
-const BOARD_X1 = 50;
-const BOARD_Y1 = 50;
+const BOX_SIZE = 30;
+const BOARD_X1 = 350;
+const BOARD_Y1 = 30;
 const BOARD_WIDTH = COLS * BOX_SIZE;
 const BOARD_HEIGHT = (ROWS - EXTRA_ROWS) * BOX_SIZE;
 
