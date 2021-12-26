@@ -51,6 +51,11 @@ function keyPressed() {
   if (keyCode === RIGHT_ARROW) {
     controller.movePieceRight();
   }
+
+  //keyCode p = 80
+  if (keyCode === 80) {
+    controller.pauseGame();
+  }
 }
 
 function checkKeyDown() {
@@ -60,11 +65,11 @@ function checkKeyDown() {
     frameRate(SPEED);
   }
 
-  if (keyIsDown(LEFT_ARROW)) {
-    controller.movePieceLeft();
-  }
+  // if (keyIsDown(LEFT_ARROW)) {
+  //   controller.movePieceLeft();
+  // }
 
-  if (keyIsDown(RIGHT_ARROW)) {
-    controller.movePieceRight();
-  }
+  // if (keyIsDown(RIGHT_ARROW)) {
+  //   controller.movePieceRight();
+  // }
 }

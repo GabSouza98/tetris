@@ -4,6 +4,7 @@ class Controller {
     this.gameBoard = new GameBoard();
     this.pieceLifespan = 0;
     this.score = 0;
+    this.paused = false;
   }
 
   start() {
@@ -13,7 +14,28 @@ class Controller {
     this.pieceBoard.draw();
   }
 
+  pauseGame() {
+    this.paused = !this.paused;
+  }
+
   update() {
+    if (this.paused) {
+      this.pieceBoard.draw();
+      this.gameBoard.drawGrid();
+      this.gameBoard.draw();
+      let pauseColor = "rgba(100%,100%,100%,0.2)";
+      fill(pauseColor);
+      rect(BOARD_X1, BOARD_Y1, BOARD_WIDTH, BOARD_HEIGHT);
+      fill(255);
+      textSize(30);
+      text(
+        "Game Paused",
+        BOARD_X1 + (BOARD_WIDTH / 2) * 0.4,
+        BOARD_Y1 + BOARD_HEIGHT / 2
+      );
+      return;
+    }
+
     if (
       this.pieceBoard.touchFloor() ||
       this.touchOtherPieceVertically(this.gameBoard, this.pieceBoard)
