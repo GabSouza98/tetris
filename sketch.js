@@ -49,16 +49,18 @@ function draw() {
 }
 
 function keyPressed() {
-  if (keyCode === UP_ARROW) {
-    controller.rotatePiece();
-  }
+  if (!controller.paused) {
+    if (keyCode === UP_ARROW) {
+      controller.rotatePiece();
+    }
 
-  if (keyCode === LEFT_ARROW) {
-    controller.movePieceLeft();
-  }
+    if (keyCode === LEFT_ARROW) {
+      controller.movePieceLeft();
+    }
 
-  if (keyCode === RIGHT_ARROW) {
-    controller.movePieceRight();
+    if (keyCode === RIGHT_ARROW) {
+      controller.movePieceRight();
+    }
   }
 
   //keyCode p = 80
