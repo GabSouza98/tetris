@@ -33,10 +33,16 @@ class Menu {
 
     // Checks kind of piece, some of them will be drawn 1 box size lower
     let drawPiecesLower = ["O", "S", "Z"];
+    let drawPiecesLeft = ["I"];
     let drawLower = 0;
+    let drawLeft = 0;
 
     if (drawPiecesLower.includes(pieces[this.nextPiece].name)) {
       drawLower = 1;
+    }
+
+    if (drawPiecesLeft.includes(pieces[this.nextPiece].name)) {
+      drawLeft = 1;
     }
 
     for (let i = 1; i <= pieceMatrix.length; i++) {
@@ -45,7 +51,10 @@ class Menu {
           let color = pieces[this.nextPiece].color + "CC";
           fill(color);
           rect(
-            MENU_X1 + MENU_SPACING * j + 3 * MENU_SPACING,
+            MENU_X1 +
+              MENU_SPACING * j +
+              3 * MENU_SPACING -
+              drawLeft * MENU_SPACING,
             MENU_Y1 + MENU_SPACING * i + drawLower * MENU_SPACING,
             MENU_SPACING,
             MENU_SPACING
