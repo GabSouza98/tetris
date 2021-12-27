@@ -1,10 +1,11 @@
 class Controller {
   constructor() {
-    this.pieceBoard = new PieceBoard();
+    this.pieceBoard = new PieceBoard(this.generatePieceNumber());
     this.gameBoard = new GameBoard();
     this.pieceLifespan = 0;
     this.score = 0;
     this.paused = false;
+    this.nextPiece = this.generatePieceNumber();
   }
 
   start() {
@@ -47,12 +48,14 @@ class Controller {
       if (this.pieceLifespan == 0) {
         this.gameOver();
       }
-      this.pieceBoard = new PieceBoard();
+      this.pieceBoard = new PieceBoard(this.nextPiece);
+      this.nextPiece = this.generatePieceNumber();
       this.pieceBoard.spawnPiece();
       this.pieceLifespan = 0;
     } else {
       this.pieceBoard.applyGravity();
       this.pieceLifespan++;
+      console.log(this.nextPiece);
     }
 
     this.pieceBoard.draw();
@@ -67,6 +70,11 @@ class Controller {
     this.gameBoard = new GameBoard();
     this.pieceLifespan = 0;
     this.score = 0;
+  }
+
+  generatePieceNumber() {
+    let number = Math.floor(1 + Math.random() * Object.keys(pieces).length);
+    return number;
   }
 
   movePieceRight() {

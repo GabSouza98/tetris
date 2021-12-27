@@ -1,5 +1,5 @@
 class PieceBoard extends Board {
-  constructor() {
+  constructor(pieceNumber) {
     super();
 
     // Posição da caixa da piece no piece board
@@ -7,14 +7,8 @@ class PieceBoard extends Board {
     this.y1 = 0;
     this.x2 = 0;
     this.y2 = 0;
-
-    this.pieceNumber = this.generatePieceNumber();
+    this.pieceNumber = pieceNumber;
     this.piece = pieces[this.pieceNumber];
-  }
-
-  generatePieceNumber() {
-    let number = Math.floor(1 + Math.random() * Object.keys(pieces).length);
-    return number;
   }
 
   spawnPiece() {
