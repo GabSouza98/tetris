@@ -21,10 +21,10 @@ class Menu {
   drawNextPieceBorder() {
     fill(MENU_BACKGROUND_COLOR);
     rect(
-      MENU_X1 + BOX_SIZE,
-      MENU_Y1 + BOX_SIZE,
-      MENU_WIDTH - 2 * BOX_SIZE,
-      MENU_Y1 + 3 * BOX_SIZE
+      MENU_X1 + MENU_SPACING,
+      MENU_Y1 + MENU_SPACING,
+      MENU_WIDTH - 2 * MENU_SPACING,
+      MENU_Y1 + 3 * MENU_SPACING
     );
   }
 
@@ -45,10 +45,10 @@ class Menu {
           let color = pieces[this.nextPiece].color + "CC";
           fill(color);
           rect(
-            MENU_X1 + BOX_SIZE * j + 3 * BOX_SIZE,
-            MENU_Y1 + BOX_SIZE * i + drawLower * BOX_SIZE,
-            BOX_SIZE,
-            BOX_SIZE
+            MENU_X1 + MENU_SPACING * j + 3 * MENU_SPACING,
+            MENU_Y1 + MENU_SPACING * i + drawLower * MENU_SPACING,
+            MENU_SPACING,
+            MENU_SPACING
           );
         }
       }
