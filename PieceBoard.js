@@ -9,6 +9,11 @@ class PieceBoard extends Board {
     this.y2 = 0;
     this.pieceNumber = pieceNumber;
     this.piece = pieces[this.pieceNumber];
+
+    // Special case for pieces that rotate diferently
+    this.rotatesTwice = pieces[this.pieceNumber].rotatesTwice;
+    // If this is marked, the piece will go back to its original configuration
+    this.rotateBackToOriginal = false;
   }
 
   spawnPiece() {
@@ -103,16 +108,36 @@ class PieceBoard extends Board {
   }
 
   rotate() {
-    let croppedPiece = this.cropBoard(this.x1, this.y1, this.x2, this.y2);
-    let rotated = this.rotateMatrix(croppedPiece);
+    console.log("console");
+    if (this.rotatesTwice && this.rotateBackToOriginal) {
+      // Overrides board with the original version
+      let originalPiece = pieces[this.pieceNumber].matrix;
+      let pieceSize = originalPiece.length;
+      for (let i = 0; i < pieceSize; i++) {
+        for (let j = 0; j < pieceSize; j++) {
+          this.board[i + this.y1][j + this.x1] = originalPiece[i][j]
+            ? this.pieceNumber
+            : 0;
+        }
+      }
+      this.rotateBackToOriginal = !this.rotateBackToOriginal;
+    } else {
+      let croppedPiece = this.cropBoard(this.x1, this.y1, this.x2, this.y2);
+      let rotated = this.rotateMatrix(croppedPiece);
 
-    // Limpa o board pra sobreescrever com a versão rotacionada
-    this.cleanBoard();
+      // Limpa o board pra sobreescrever com a versão rotacionada
+      this.cleanBoard();
 
-    let pieceSize = croppedPiece.length;
-    for (let i = 0; i < pieceSize; i++) {
-      for (let j = 0; j < pieceSize; j++) {
-        this.board[i + this.y1][j + this.x1] = rotated[i][j];
+      let pieceSize = croppedPiece.length;
+      for (let i = 0; i < pieceSize; i++) {
+        for (let j = 0; j < pieceSize; j++) {
+          this.board[i + this.y1][j + this.x1] = rotated[i][j];
+        }
+      }
+
+      // If here, and its a "rotateTwice" kind of piece, on next rotate it should go back to original
+      if (this.rotatesTwice) {
+        this.rotateBackToOriginal = !this.rotateBackToOriginal;
       }
     }
   }

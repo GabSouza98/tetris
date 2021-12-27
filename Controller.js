@@ -1,11 +1,15 @@
 class Controller {
   constructor() {
-    this.pieceBoard = new PieceBoard(this.generatePieceNumber());
+    let firstPieceNumber = this.generatePieceNumber();
+    console.log(firstPieceNumber);
+    this.pieceBoard = new PieceBoard(firstPieceNumber);
     this.gameBoard = new GameBoard();
     this.pieceLifespan = 0;
     this.score = 0;
     this.paused = false;
-    this.nextPiece = this.generatePieceNumber();
+    let secondPieceNumber = this.generatePieceNumber();
+    console.log(secondPieceNumber);
+    this.nextPiece = secondPieceNumber;
   }
 
   start() {
@@ -49,13 +53,15 @@ class Controller {
         this.gameOver();
       }
       this.pieceBoard = new PieceBoard(this.nextPiece);
-      this.nextPiece = this.generatePieceNumber();
+      let nextPieceNumber = this.generatePieceNumber();
+      console.log(nextPieceNumber);
+      this.nextPiece = nextPieceNumber;
       this.pieceBoard.spawnPiece();
       this.pieceLifespan = 0;
     } else {
       this.pieceBoard.applyGravity();
       this.pieceLifespan++;
-      console.log(this.nextPiece);
+      // console.log(this.nextPiece);
     }
 
     this.pieceBoard.draw();
@@ -65,7 +71,9 @@ class Controller {
 
   gameOver() {
     background(255);
-    this.pieceBoard = new PieceBoard();
+    let nextPieceNumber = this.generatePieceNumber();
+    console.log(nextPieceNumber);
+    this.pieceBoard = new PieceBoard(nextPieceNumber);
     this.pieceBoard.spawnPiece();
     this.gameBoard = new GameBoard();
     this.pieceLifespan = 0;
