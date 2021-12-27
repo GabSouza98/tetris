@@ -1,28 +1,43 @@
 class Menu {
   constructor(nextPiece) {
-    this.x1 = MENU_X1;
-    this.x2 = MENU_WIDTH;
-    this.y1 = MENU_Y1;
-    this.y2 = MENU_HEIGHT;
     this.nextPiece = nextPiece;
   }
 
   draw() {
+    this.drawMenuBorder();
+    this.drawNextPieceMenu();
+  }
+
+  drawMenuBorder() {
     fill(MENU_BACKGROUND_COLOR);
-    rect(this.x1, this.y1, this.x2, this.y2);
+    rect(MENU_X1, MENU_Y1, MENU_WIDTH, MENU_HEIGHT);
+  }
+
+  drawNextPieceMenu() {
+    this.drawNextPieceBorder();
     this.drawNextPiece();
   }
 
-  drawNextPiece() {
+  drawNextPieceBorder() {
     fill(MENU_BACKGROUND_COLOR);
     rect(
-      this.x1 + BOX_SIZE,
-      this.y1 + BOX_SIZE,
-      this.x2 - 2 * BOX_SIZE,
-      this.y1 + 3 * BOX_SIZE
+      MENU_X1 + BOX_SIZE,
+      MENU_Y1 + BOX_SIZE,
+      MENU_WIDTH - 2 * BOX_SIZE,
+      MENU_Y1 + 3 * BOX_SIZE
     );
+  }
 
+  drawNextPiece() {
     let pieceMatrix = pieces[this.nextPiece].matrix;
+
+    // Checks kind of piece, some of them will be drawn 1 box size lower
+    let drawPiecesLower = ["O", "S", "Z"];
+    let drawLower = 0;
+
+    if (drawPiecesLower.includes(pieces[this.nextPiece].name)) {
+      drawLower = 1;
+    }
 
     for (let i = 1; i <= pieceMatrix.length; i++) {
       for (let j = 1; j <= pieceMatrix.length; j++) {
@@ -30,8 +45,8 @@ class Menu {
           let color = pieces[this.nextPiece].color + "CC";
           fill(color);
           rect(
-            this.x1 + BOX_SIZE * j + 3 * BOX_SIZE,
-            this.y1 + BOX_SIZE * i,
+            MENU_X1 + BOX_SIZE * j + 3 * BOX_SIZE,
+            MENU_Y1 + BOX_SIZE * i + drawLower * BOX_SIZE,
             BOX_SIZE,
             BOX_SIZE
           );
