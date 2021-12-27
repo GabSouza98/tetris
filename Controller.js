@@ -27,6 +27,7 @@ class Controller {
       this.pieceBoard.draw();
       this.gameBoard.drawGrid();
       this.gameBoard.draw();
+      this.menu.draw();
       let pauseColor = "rgba(100%,100%,100%,0.2)";
       fill(pauseColor);
       rect(BOARD_X1, BOARD_Y1, BOARD_WIDTH, BOARD_HEIGHT);
