@@ -1,6 +1,6 @@
 // CANVAS CONFIG
 const CANVAS_HEIGHT = 650;
-const CANVAS_WIDTH = 1300;
+const CANVAS_WIDTH = 700;
 
 // BOARD CONFIG
 const VISIBLE_ROWS = 20; //CHOOSEN BY PLAYER
@@ -8,15 +8,12 @@ const EXTRA_ROWS = 2;
 const RATIO = 2;
 const ROWS = VISIBLE_ROWS + EXTRA_ROWS;
 const COLS = Math.floor(VISIBLE_ROWS / RATIO);
-const BOARD_X1 = 350;
-const BOARD_Y1 = 30;
+const BOARD_X1 = 25;
+const BOARD_Y1 = 25;
 
 const BOARD_WIDTH = 300;
 const BOARD_HEIGHT = 600;
 const BOX_SIZE = BOARD_HEIGHT / VISIBLE_ROWS;
-
-// const BOARD_WIDTH = COLS * BOX_SIZE;
-// const BOARD_HEIGHT = (ROWS - EXTRA_ROWS) * BOX_SIZE;
 
 // MENU CONFIG
 const MENU_X1 = BOARD_X1 + BOARD_WIDTH + BOX_SIZE;
@@ -76,12 +73,4 @@ function checkKeyDown() {
   } else {
     frameRate(SPEED);
   }
-
-  // if (keyIsDown(LEFT_ARROW)) {
-  //   controller.movePieceLeft();
-  // }
-
-  // if (keyIsDown(RIGHT_ARROW)) {
-  //   controller.movePieceRight();
-  // }
 }
