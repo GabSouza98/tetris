@@ -1,22 +1,21 @@
 class Controller {
   constructor() {
-    let firstPieceNumber = this.generatePieceNumber();
-    console.log(firstPieceNumber);
-    this.pieceBoard = new PieceBoard(firstPieceNumber);
+    this.pieceBoard = new PieceBoard(this.generatePieceNumber());
     this.gameBoard = new GameBoard();
     this.pieceLifespan = 0;
     this.score = 0;
     this.paused = false;
-    let secondPieceNumber = this.generatePieceNumber();
-    console.log(secondPieceNumber);
-    this.nextPiece = secondPieceNumber;
+    this.nextPiece = this.generatePieceNumber();
+    this.menu = new Menu(this.nextPiece);
   }
 
   start() {
     this.pieceBoard.spawnPiece();
+    this.gameBoard.drawBackground();
     this.gameBoard.drawGrid();
     this.gameBoard.draw();
     this.pieceBoard.draw();
+    this.menu.draw();
   }
 
   pauseGame() {
@@ -53,17 +52,17 @@ class Controller {
         this.gameOver();
       }
       this.pieceBoard = new PieceBoard(this.nextPiece);
-      let nextPieceNumber = this.generatePieceNumber();
-      console.log(nextPieceNumber);
-      this.nextPiece = nextPieceNumber;
+      this.nextPiece = this.generatePieceNumber();
+      this.menu.setNextPiece(this.nextPiece);
       this.pieceBoard.spawnPiece();
       this.pieceLifespan = 0;
     } else {
       this.pieceBoard.applyGravity();
       this.pieceLifespan++;
-      // console.log(this.nextPiece);
     }
 
+    this.menu.draw();
+    this.gameBoard.drawBackground();
     this.pieceBoard.draw();
     this.gameBoard.drawGrid();
     this.gameBoard.draw();
@@ -71,10 +70,11 @@ class Controller {
 
   gameOver() {
     background(255);
-    let nextPieceNumber = this.generatePieceNumber();
-    console.log(nextPieceNumber);
-    this.pieceBoard = new PieceBoard(nextPieceNumber);
+    this.pieceBoard = new PieceBoard(this.generatePieceNumber());
     this.pieceBoard.spawnPiece();
+    this.nextPiece = this.generatePieceNumber();
+    this.menu.setNextPiece(this.nextPiece);
+
     this.gameBoard = new GameBoard();
     this.pieceLifespan = 0;
     this.score = 0;

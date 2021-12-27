@@ -50,15 +50,19 @@ class Board {
     }
   }
 
+  drawBackground() {
+    fill(BOARD_BACKGROUND_COLOR);
+    rect(BOARD_X1, BOARD_Y1, BOARD_WIDTH, BOARD_HEIGHT);
+  }
+
   draw() {
     // Starts at EXTRA_ROWS, since are the hidden ones
     for (var i = EXTRA_ROWS; i < ROWS; i++) {
       for (var j = 0; j < COLS; j++) {
+        let x1 = BOARD_X1 + j * BOX_SIZE;
+        let y1 = BOARD_Y1 + (i - EXTRA_ROWS) * BOX_SIZE;
         if (this.board[i][j] > 0) {
           // Subtracts EXTRA_ROWS, so in the beggining in multiplies by 0
-          let x1 = BOARD_X1 + j * BOX_SIZE;
-          let y1 = BOARD_Y1 + (i - EXTRA_ROWS) * BOX_SIZE;
-
           let pieceNumber = this.board[i][j];
           let color = pieces[pieceNumber].color + "CC";
           fill(color);

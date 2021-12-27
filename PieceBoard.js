@@ -108,7 +108,6 @@ class PieceBoard extends Board {
   }
 
   rotate() {
-    console.log("console");
     if (this.rotatesTwice && this.rotateBackToOriginal) {
       // Overrides board with the original version
       let originalPiece = pieces[this.pieceNumber].matrix;
@@ -135,7 +134,7 @@ class PieceBoard extends Board {
         }
       }
 
-      // If here, and its a "rotateTwice" kind of piece, on next rotate it should go back to original
+      //If here, and its a "rotateTwice" kind of piece, on next rotate it should go back to original
       if (this.rotatesTwice) {
         this.rotateBackToOriginal = !this.rotateBackToOriginal;
       }
