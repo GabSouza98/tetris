@@ -50,8 +50,8 @@ function draw() {
   if (frameCount % SPEED === 0) {
     background(CANVAS_BACKGROUND_COLOR);
     controller.update();
-    checkKeyDown();
   }
+  checkKeyDown();
 }
 
 function keyPressed() {
