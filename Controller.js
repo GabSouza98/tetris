@@ -89,6 +89,7 @@ class Controller {
       return;
     }
     this.pieceBoard.moveRight();
+    this.draw();
   }
 
   movePieceLeft() {
@@ -96,11 +97,13 @@ class Controller {
       return;
     }
     this.pieceBoard.moveLeft();
+    this.draw();
   }
 
   rotatePiece() {
     if (this.pieceCanRotate()) {
       this.pieceBoard.rotate();
+      this.draw();
     }
   }
 
