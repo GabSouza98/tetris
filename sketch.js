@@ -30,12 +30,14 @@ const STROKE = 20;
 const STROKE_WEIGHT = 1.5;
 
 // GAME CONFIG
-const SPEED = 5;
+let FAST_SPEED = 3;
+let NORMAL_SPEED = 20;
+let SPEED = NORMAL_SPEED;
 
 let controller;
 
 function setup() {
-  frameRate(5);
+  frameRate(60);
   createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
   background(CANVAS_BACKGROUND_COLOR);
 
@@ -44,9 +46,12 @@ function setup() {
 }
 
 function draw() {
-  background(CANVAS_BACKGROUND_COLOR);
-  controller.update();
-  checkKeyDown();
+  console.log(SPEED);
+  if (frameCount % SPEED === 0) {
+    background(CANVAS_BACKGROUND_COLOR);
+    controller.update();
+    checkKeyDown();
+  }
 }
 
 function keyPressed() {
@@ -72,8 +77,8 @@ function keyPressed() {
 
 function checkKeyDown() {
   if (keyIsDown(DOWN_ARROW)) {
-    frameRate(15);
+    SPEED = FAST_SPEED;
   } else {
-    frameRate(SPEED);
+    SPEED = NORMAL_SPEED;
   }
 }
