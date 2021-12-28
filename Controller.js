@@ -11,11 +11,7 @@ class Controller {
 
   start() {
     this.pieceBoard.spawnPiece();
-    this.gameBoard.drawBackground();
-    this.gameBoard.drawGrid();
-    this.gameBoard.draw();
-    this.pieceBoard.draw();
-    this.menu.draw();
+    this.draw();
   }
 
   pauseGame() {
@@ -24,10 +20,7 @@ class Controller {
 
   update() {
     if (this.paused) {
-      this.pieceBoard.draw();
-      this.gameBoard.drawGrid();
-      this.gameBoard.draw();
-      this.menu.draw();
+      this.draw();
       let pauseColor = "rgba(100%,100%,100%,0.2)";
       fill(pauseColor);
       rect(BOARD_X1, BOARD_Y1, BOARD_WIDTH, BOARD_HEIGHT);
@@ -62,8 +55,12 @@ class Controller {
       this.pieceLifespan++;
     }
 
-    this.menu.draw();
     this.menu.setScore(this.score);
+    this.draw();
+  }
+
+  draw() {
+    this.menu.draw();
     this.gameBoard.drawBackground();
     this.pieceBoard.draw();
     this.gameBoard.drawGrid();
