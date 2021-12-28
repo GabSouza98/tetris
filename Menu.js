@@ -1,11 +1,13 @@
 class Menu {
   constructor(nextPiece) {
     this.nextPiece = nextPiece;
+    this.score = 0;
   }
 
   draw() {
     this.drawMenuBorder();
     this.drawNextPieceMenu();
+    this.drawScoreMenu();
   }
 
   drawMenuBorder() {
@@ -64,7 +66,36 @@ class Menu {
     }
   }
 
+  drawScoreMenu() {
+    this.drawScoreBorder();
+    this.drawScore();
+  }
+
+  drawScoreBorder() {
+    fill(MENU_BACKGROUND_COLOR);
+    rect(
+      MENU_X1 + MENU_SPACING,
+      MENU_Y1 + MENU_SPACING + 5 * MENU_SPACING,
+      MENU_WIDTH - 2 * MENU_SPACING,
+      MENU_Y1 + 3 * MENU_SPACING
+    );
+  }
+
+  drawScore() {
+    fill(255);
+    textSize(45);
+    text(
+      "Score: " + this.score,
+      MENU_X1 + 2 * MENU_SPACING,
+      MENU_Y1 + 8.5 * MENU_SPACING
+    );
+  }
+
   setNextPiece(nextPiece) {
     this.nextPiece = nextPiece;
+  }
+
+  setScore(score) {
+    this.score = score;
   }
 }

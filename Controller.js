@@ -63,6 +63,7 @@ class Controller {
     }
 
     this.menu.draw();
+    this.menu.setScore(this.score);
     this.gameBoard.drawBackground();
     this.pieceBoard.draw();
     this.gameBoard.drawGrid();
